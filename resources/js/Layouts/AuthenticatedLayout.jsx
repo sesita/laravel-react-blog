@@ -25,7 +25,7 @@ export default function Authenticated({ auth, header, children }) {
                                     Dashboard
                                 </NavLink>
                                 <NavLink active={route().current('Blogs')}>
-                                    Blogs
+                                    Add Blog
                                 </NavLink>
                             </div>
                         </div>

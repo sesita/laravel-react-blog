@@ -1,6 +1,7 @@
 import { Link, Head, useAuth } from '@inertiajs/inertia-react';
-export default function Welcome(props) {
-    const { user } = props.auth;
+
+export default function Welcome({auth}) {
+    const { user } = auth;
 
     return (
         <>
@@ -14,11 +15,10 @@ export default function Welcome(props) {
                     <a href='/test' className="mx-1">
                         About
                     </a>
-                    {user ?
+                    {user &&
                         <>
-                            <Link href={route('Dashboard')} className='mt-4 block'> Admin Panel - {props.auth.user.name} </Link>
+                            <Link href={route('Dashboard')} className='mt-4 block'> Admin Panel - {auth.user.name} </Link>
                         </>
-                        : null
                     }
                 </p>
                 <hr />

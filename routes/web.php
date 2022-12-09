@@ -29,7 +29,7 @@ Route::get('/', function () {
 require __DIR__.'/auth.php';
 
 
-Route::get('/blogs', 'Controller@blogs')->name('Blogs');
+// Route::get('/blogs', 'Controller@blogs')->name('Blogs');
 Route::get('/blog/{slug}', 'Controller@blogDetail')->name('Blog');
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified']], function() {
@@ -38,7 +38,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified']], functi
     Route::delete('/profile', 'ProfileController@destroy')->name('profile.destroy');
 
     Route::get('/', 'AdminController@index')->name('Dashboard');
-    Route::post('/blog/store', 'AdminController@store')->name('Blog.Store');
-    Route::put('/blog/edit/{blogId}', 'AdminController@update')->name('Blog.Update');
-    Route::delete('/blog/delete/{blogId}', 'AdminController@delete')->name('Blog.Delete');
+
+    Route::resource('blog', 'BlogController');
+    // Route::post('/blog/store', 'AdminController@store')->name('Blog.Store');
+    // Route::put('/blog/edit/{blogId}', 'AdminController@update')->name('Blog.Update');
+    // Route::delete('/blog/delete/{blogId}', 'AdminController@delete')->name('Blog.Delete');
 });
