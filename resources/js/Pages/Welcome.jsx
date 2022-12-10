@@ -11,10 +11,10 @@ export default function Welcome(props) {
                     <Link href='/'><h1 className='font-bold mb-2'>Julian Ivaldy </h1></Link>
                 </header>
                 <p>
-                    Working on <Link href={''}>Farcaster</Link>. More
-                    <a href='/test' className="mx-1">
-                        About
-                    </a>
+                    View Information
+                    <Link href={route('About')} className="mx-1">
+                        About Me
+                    </Link>
                     {user &&
                         <>
                             <Link href={route('Dashboard')} className='mt-4 block'> Admin Panel - {props.auth.user.name} </Link>

@@ -19,15 +19,18 @@ use Inertia\Inertia;
 require __DIR__.'/auth.php';
 
 Route::get('/', 'Controller@blogs')->name('Blogs');
+Route::get('/about', 'Controller@about')->name('About');
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified']], function() {
-    Route::resource('blog', 'BlogController');
+    Route::get('/', 'AdminController@index')->name('Dashboard');
+
     Route::get('/blog/create', 'BlogController@create')->name('blog.create');
     Route::post('/blog/store', 'BlogController@store')->name('blog.store');
     Route::get('/blog/delete/{id}', 'BlogController@destroy')->name('blog.destroy');
 
-    Route::get('/', 'AdminController@index')->name('Dashboard');
-    
+    Route::get('/about/edit', 'AdminController@aboutEdit')->name('About.Edit');
+    Route::post('/about/update', 'AdminController@aboutUpdate')->name('About.Update');
+
     Route::get('/profile', 'ProfileController@edit')->name('profile.edit');
     Route::patch('/profile', 'ProfileController@update')->name('profile.update');
     Route::delete('/profile', 'ProfileController@destroy')->name('profile.destroy');

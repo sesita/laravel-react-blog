@@ -1,12 +1,11 @@
 import { Link, usePage } from '@inertiajs/inertia-react';
-import { Head } from '@inertiajs/inertia-react'
 
-export default function Welcome(props) {
+export default function About(props) {
     const { user } = props.auth;
-    const { blog } = usePage().props;
+    const { about } = usePage().props;
 
     const description = {
-        __html: `${blog.description}`
+        __html: `${about.description}`
     };
 
     return (
@@ -22,9 +21,7 @@ export default function Welcome(props) {
                     }
                 </header>
                 <hr />
-                <p className='mt-4 mb-4'>{blog.title}</p>
-
-                <div dangerouslySetInnerHTML={description}></div>
+                <div dangerouslySetInnerHTML={description} className="mt-4"></div>
             </main>
         </>
     );

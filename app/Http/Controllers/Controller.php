@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Models\Blog;
 use Inertia\Inertia;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -23,5 +24,9 @@ class Controller extends BaseController
             return response(['error' => true, 'message' => 'Blog Not Found']);
         }
         return Inertia::render('DetailBlog', ['blog' => $blog]);
+    }
+    public function about(){
+        $about = DB::table('about')->first();
+        return Inertia::render('About', ['about' => $about]);
     }
 }
