@@ -16,31 +16,21 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-
-
 require __DIR__.'/auth.php';
 
-
-// Route::get('/blogs', 'Controller@blogs')->name('Blogs');
-Route::get('/blog/{slug}', 'Controller@blogDetail')->name('Blog');
+Route::get('/', 'Controller@blogs')->name('Blogs');
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified']], function() {
+    Route::resource('blog', 'BlogController');
+    Route::get('/blog/create', 'BlogController@create')->name('blog.create');
+    Route::post('/blog/store', 'BlogController@store')->name('blog.store');
+    Route::get('/blog/delete/{id}', 'BlogController@destroy')->name('blog.destroy');
+
+    Route::get('/', 'AdminController@index')->name('Dashboard');
+    
     Route::get('/profile', 'ProfileController@edit')->name('profile.edit');
     Route::patch('/profile', 'ProfileController@update')->name('profile.update');
     Route::delete('/profile', 'ProfileController@destroy')->name('profile.destroy');
-
-    Route::get('/', 'AdminController@index')->name('Dashboard');
-
-    Route::resource('blog', 'BlogController');
-    // Route::post('/blog/store', 'AdminController@store')->name('Blog.Store');
-    // Route::put('/blog/edit/{blogId}', 'AdminController@update')->name('Blog.Update');
-    // Route::delete('/blog/delete/{blogId}', 'AdminController@delete')->name('Blog.Delete');
 });
+
+Route::get('/{slug}', 'Controller@blogDetail')->name('Blog.Detail');

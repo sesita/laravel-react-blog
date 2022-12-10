@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Blog;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class BlogController extends Controller
 {
@@ -12,6 +13,10 @@ class BlogController extends Controller
     {
         $blogs = Blog::latest()->get();
         return Inertia::render('Dashboard', ['blogs' => $blogs]);
+    }
+    public function create()
+    {
+        return Inertia::render('AddBlog');
     }
     public function store(Request $request)
     {
@@ -23,10 +28,9 @@ class BlogController extends Controller
             'title' => $request->title,
             'slug' => $request->slug,
             'description' => $request->description,
-            'link' => $request->link,
         ]);
 
-        return response(['success' => true, 'message' => 'Blog Successfuly Added']);
+        return Redirect::route('Dashboard');
     }
     public function update($blogId, Request $request)
     {
@@ -52,6 +56,6 @@ class BlogController extends Controller
     {
         Blog::where('id', $blogId)->delete();
 
-        return response(['success' => true, 'message' => 'Blog Successfuly Deleted']);
+        return Redirect::route('Dashboard');
     }
 }

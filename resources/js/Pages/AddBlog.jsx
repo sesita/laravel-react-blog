@@ -1,115 +1,118 @@
-import React from "react";
+import { useRef, useEffect, useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, usePage } from '@inertiajs/inertia-react';
+import { Head, Link, useForm } from '@inertiajs/inertia-react';
+import InputError from '@/Components/InputError';
+import InputLabel from '@/Components/InputLabel';
+import PrimaryButton from '@/Components/PrimaryButton';
+import TextInput from '@/Components/TextInput';
+import { Editor } from '@tinymce/tinymce-react';
 
 export default function Dashboard(props) {
-    const { blogs } = usePage().props;
-    const { data } = blogs;
+    const editorRef = useRef(null);
+    const log = () => {
+        if (editorRef.current) {
+            console.log(editorRef.current.getContent());
+        }
+    };
+
+    const { data, setData, post, processing, errors, reset } = useForm({
+        title: '',
+        slug: '',
+        description: '',
+    });
+
+    const editorChange = (event) => {
+        data.description = event
+    }
+
+    const onHandleChange = (event) => {
+        if (event.target.name == 'title') {
+            const titleText = event.target.value;
+            data.title = titleText;
+            data.slug = titleText.replace(/ /g, '-');
+        }
+        setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value);
+    };
+
+    const submit = (e) => {
+        e.preventDefault();
+
+        post(route('blog.store'));
+    };
+
     return (
         <AuthenticatedLayout
             auth={props.auth}
             errors={props.errors}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Add Blog</h2>}
         >
-            <Head title="Dashboard" />
-
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            <table className="min-w-full divide-y divide-gray-200">
-                                <thead className="bg-gray-50">
-                                    <tr>
-                                        <th
-                                            scope="col"
-                                            className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
-                                        >
-                                            ID
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
-                                        >
-                                            Title
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
-                                        >
-                                            Slug
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
-                                        >
-                                            Edit
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
-                                        >
-                                            Delete
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-200">
-                                    <tr>
-                                        <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
-                                            2
-                                        </td>
-                                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                            Test 2
-                                        </td>
-                                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                            test-2
-                                        </td>
-                                        <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                                            <a
-                                                className="text-green-500 hover:text-green-700"
-                                                href="#"
-                                            >
-                                                Edit
-                                            </a>
-                                        </td>
-                                        <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                                            <a
-                                                className="text-red-500 hover:text-red-700"
-                                                href="#"
-                                            >
-                                                Delete
-                                            </a>
-                                        </td>
-                                    </tr>
+                            <form onSubmit={submit}>
+                                <div>
+                                    <InputLabel forInput="title" value="Title" />
 
-                                    <tr>
-                                        <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
-                                            1
-                                        </td>
-                                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                            test
-                                        </td>
-                                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                            test
-                                        </td>
-                                        <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                                            <a
-                                                className="text-green-500 hover:text-green-700"
-                                                href="#"
-                                            >
-                                                Edit
-                                            </a>
-                                        </td>
-                                        <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                                            <a
-                                                className="text-red-500 hover:text-red-700"
-                                                href="#"
-                                            >
-                                                Delete
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                    <TextInput
+                                        id="title"
+                                        name="title"
+                                        value={data.title}
+                                        className="mt-1 block w-full"
+                                        autoComplete="name"
+                                        isFocused={true}
+                                        handleChange={onHandleChange}
+                                    />
+
+                                    <InputError message={errors.title} className="mt-2" />
+                                </div>
+
+                                <div className="mt-4">
+                                    <InputLabel forInput="slug" value="Slug" />
+
+                                    <TextInput
+                                        id="slug"
+                                        type="text"
+                                        name="slug"
+                                        value={data.slug}
+                                        className="mt-1 block w-full"
+                                        autoComplete="username"
+                                        handleChange={onHandleChange}
+                                    />
+
+                                    <InputError message={errors.slug} className="mt-2" />
+                                </div>
+
+                                <div className="mt-4">
+                                    <InputLabel forInput="description" className='mb-2' value="Description" />
+
+                                    <Editor apiKey='txt9y8vk9ycde0f2bdi79ijksbxiiwicw0wypxlpg2de2i7z'
+                                        textareaName='description'
+                                        value={data.description}
+                                        onInit={(evt, editor) => editorRef.current = editor}
+                                        onEditorChange={editorChange}
+                                        init={{
+                                            height: 500,
+                                            menubar: false,
+                                            plugins: [
+                                                'advlist autolink lists link image charmap print preview anchor',
+                                                'searchreplace visualblocks code fullscreen',
+                                                'insertdatetime media table paste code help wordcount stylebuttons'
+                                            ],
+                                            toolbar: 'undo redo | formatselect | ' +
+                                                'bold italic backcolor | alignleft aligncenter ' +
+                                                'alignright alignjustify | bullist numlist outdent indent | ' +
+                                                'removeformat | help | | h1 h2 h3',
+                                            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                                        }}
+                                    />
+
+                                    <InputError message={errors.description} className="mt-2" />
+                                </div>
+                                <PrimaryButton className='mt-4' processing={processing}>
+                                    Add Blog
+                                </PrimaryButton>
+                            </form>
                         </div>
                     </div>
                 </div>

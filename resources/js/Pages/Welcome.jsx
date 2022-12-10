@@ -1,14 +1,14 @@
-import { Link, Head, useAuth } from '@inertiajs/inertia-react';
+import { Link, usePage } from '@inertiajs/inertia-react';
 
-export default function Welcome({auth}) {
-    const { user } = auth;
-
+export default function Welcome(props) {
+    const { user } = props.auth;
+    const { blogs } = usePage().props;
     return (
         <>
             <main className='p-4 max-w-md m-auto'>
 
                 <header>
-                    <h1 className='font-bold mb-2'>Julian Ivaldy</h1>
+                    <Link href='/'><h1 className='font-bold mb-2'>Julian Ivaldy </h1></Link>
                 </header>
                 <p>
                     Working on <Link href={''}>Farcaster</Link>. More
@@ -17,19 +17,18 @@ export default function Welcome({auth}) {
                     </a>
                     {user &&
                         <>
-                            <Link href={route('Dashboard')} className='mt-4 block'> Admin Panel - {auth.user.name} </Link>
+                            <Link href={route('Dashboard')} className='mt-4 block'> Admin Panel - {props.auth.user.name} </Link>
                         </>
                     }
                 </p>
                 <hr />
                 <h2 className='font-semibold'>Posts</h2>
                 <ul>
-                    <li>
-                        <Link href={''}>Crypto Reading list</Link>
-                    </li>
-                    <li>
-                        <Link href={''}>Book recommendations</Link>
-                    </li>
+                    {blogs.map(blog => (
+                        <li>
+                            <Link href={route('Blog.Detail', blog.slug)}>{blog.title}</Link>
+                        </li>
+                    ))}
                 </ul>
             </main>
         </>

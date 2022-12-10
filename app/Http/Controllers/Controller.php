@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use Inertia\Inertia;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -14,13 +15,13 @@ class Controller extends BaseController
 
     public function blogs(){
         $blogs = Blog::latest()->get();
-        return response($blogs);
+        return Inertia::render('Welcome', ['blogs' => $blogs]);
     }
     public function blogDetail($slug){
         $blog = Blog::where('slug', $slug)->first();
         if(!$blog){
             return response(['error' => true, 'message' => 'Blog Not Found']);
         }
-        return response($blog);
+        return Inertia::render('DetailBlog', ['blog' => $blog]);
     }
 }

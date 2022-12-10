@@ -18,7 +18,6 @@ return new class extends Migration
             $table->text('title');
             $table->text('slug');
             $table->text('description')->nullable();
-            $table->text('link')->nullable();
             $table->timestamps();
         });
     }
