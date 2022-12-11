@@ -18,7 +18,10 @@ return new class extends Migration
             $table->text('title');
             $table->text('slug');
             $table->text('description')->nullable();
-            $table->timestamps();
+            $table->text('metaTitle')->nullable();
+            $table->text('metaDescription')->nullable();
+            $table->text('metaData')->nullable();
+            $table->text('created_at')->nullable();
         });
     }
 

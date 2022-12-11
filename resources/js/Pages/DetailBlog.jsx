@@ -1,5 +1,6 @@
 import { Link, usePage } from '@inertiajs/inertia-react';
 import { Head } from '@inertiajs/inertia-react'
+import DocumentMeta from 'react-document-meta';
 
 export default function Welcome(props) {
     const { user } = props.auth;
@@ -9,9 +10,26 @@ export default function Welcome(props) {
         __html: `${blog.description}`
     };
 
+    const meta = {
+        meta: {
+            charset: 'utf-8',
+            name: {
+                title: blog.metaTitle,
+                description: blog.metaDescription,
+                keywords: blog.metaData,
+                robots: 'index, follow'
+            }
+        }
+    }
+
+
     return (
         <>
-            <main className='p-4 max-w-md m-auto'>
+            <DocumentMeta {...meta} />
+
+            <Head title={blog.metaTitle} />
+
+            <main className='py-5 md:w-2/6 px-6 m-auto'>
 
                 <header>
                     <Link href='/'><h1 className='font-bold mb-2'>Julian Ivaldy </h1></Link>
@@ -25,7 +43,10 @@ export default function Welcome(props) {
                 <p className='mt-4 mb-4'>{blog.title}</p>
 
                 <div dangerouslySetInnerHTML={description}></div>
+
+                <h5>{blog.created_at}</h5>
             </main>
         </>
     );
+
 }

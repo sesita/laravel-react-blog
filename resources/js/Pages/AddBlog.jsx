@@ -7,7 +7,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Editor } from '@tinymce/tinymce-react';
 
-export default function Dashboard(props) {
+export default function addBlog(props) {
     const editorRef = useRef(null);
     const log = () => {
         if (editorRef.current) {
@@ -19,6 +19,10 @@ export default function Dashboard(props) {
         title: '',
         slug: '',
         description: '',
+        metaTitle: '',
+        metaDescription: '',
+        metaData: '',
+        created_at: '',
     });
 
     const editorChange = (event) => {
@@ -59,7 +63,6 @@ export default function Dashboard(props) {
                                         name="title"
                                         value={data.title}
                                         className="mt-1 block w-full"
-                                        autoComplete="name"
                                         isFocused={true}
                                         handleChange={onHandleChange}
                                     />
@@ -76,7 +79,6 @@ export default function Dashboard(props) {
                                         name="slug"
                                         value={data.slug}
                                         className="mt-1 block w-full"
-                                        autoComplete="username"
                                         handleChange={onHandleChange}
                                     />
 
@@ -108,6 +110,62 @@ export default function Dashboard(props) {
                                     />
 
                                     <InputError message={errors.description} className="mt-2" />
+                                </div>
+                                <div className="mt-4">
+                                    <InputLabel forInput="metaTitle" value="Meta Title" />
+
+                                    <TextInput
+                                        id="metaTitle"
+                                        type="text"
+                                        name="metaTitle"
+                                        value={data.metaTitle}
+                                        className="mt-1 block w-full"
+                                        handleChange={onHandleChange}
+                                    />
+
+                                    <InputError message={errors.metaTitle} className="mt-2" />
+                                </div>
+                                <div className="mt-4">
+                                    <InputLabel forInput="metaDescription" value="Meta Description" />
+
+                                    <TextInput
+                                        id="metaDescription"
+                                        type="text"
+                                        name="metaDescription"
+                                        value={data.metaDescription}
+                                        className="mt-1 block w-full"
+                                        handleChange={onHandleChange}
+                                    />
+
+                                    <InputError message={errors.metaDescription} className="mt-2" />
+                                </div>
+                                <div className="mt-4">
+                                    <InputLabel forInput="metaData" value="Meta Data" />
+
+                                    <TextInput
+                                        id="metaData"
+                                        type="text"
+                                        name="metaData"
+                                        value={data.metaData}
+                                        className="mt-1 block w-full"
+                                        handleChange={onHandleChange}
+                                    />
+
+                                    <InputError message={errors.metaData} className="mt-2" />
+                                </div>
+                                <div className="mt-4">
+                                    <InputLabel forInput="created_at" value="Blog Create Date" />
+
+                                    <TextInput
+                                        id="created_at"
+                                        type="date"
+                                        name="created_at"
+                                        value={data.created_at}
+                                        className="mt-1 block w-full"
+                                        handleChange={onHandleChange}
+                                    />
+
+                                    <InputError message={errors.created_at} className="mt-2" />
                                 </div>
                                 <PrimaryButton className='mt-4' processing={processing}>
                                     Add Blog

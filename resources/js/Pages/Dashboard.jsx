@@ -33,6 +33,12 @@ export default function Dashboard(props) {
                                             scope="col"
                                             className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
                                         >
+                                            Edit
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
+                                        >
                                             Delete
                                         </th>
                                     </tr>
@@ -45,6 +51,14 @@ export default function Dashboard(props) {
                                             </td>
                                             <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
                                                 {blog.slug}
+                                            </td>
+                                            <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                                                <Link
+                                                    className="text-green-500 hover:text-green-700"
+                                                    href={route('blog.edit', blog.id)}
+                                                >
+                                                    Edit
+                                                </Link>
                                             </td>
                                             <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                                                 <Link

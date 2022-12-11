@@ -26,6 +26,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified']], functi
 
     Route::get('/blog/create', 'BlogController@create')->name('blog.create');
     Route::post('/blog/store', 'BlogController@store')->name('blog.store');
+    Route::get('/blog/edit/{id}', 'BlogController@edit')->name('blog.edit');
+    Route::post('/blog/update/{id}', 'BlogController@update')->name('blog.update');
     Route::get('/blog/delete/{id}', 'BlogController@destroy')->name('blog.destroy');
 
     Route::get('/about/edit', 'AdminController@aboutEdit')->name('About.Edit');

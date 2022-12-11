@@ -22,6 +22,7 @@
         "vite": "^3.0.0"
     },
     "dependencies": {
-        "@tinymce/tinymce-react": "^4.2.0"
+        "@tinymce/tinymce-react": "^4.2.0",
+        "react-document-meta": "^3.0.0-beta.2"
     }
 }

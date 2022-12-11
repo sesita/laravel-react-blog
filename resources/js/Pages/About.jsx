@@ -10,7 +10,7 @@ export default function About(props) {
 
     return (
         <>
-            <main className='p-4 max-w-md m-auto'>
+            <main className='py-5 md:w-2/6 px-6 m-auto'>
 
                 <header>
                     <Link href='/'><h1 className='font-bold mb-2'>Julian Ivaldy </h1></Link>

@@ -1,13 +1,13 @@
 import { useRef, useEffect, useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link, useForm } from '@inertiajs/inertia-react';
+import { usePage, useForm } from '@inertiajs/inertia-react';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Editor } from '@tinymce/tinymce-react';
 
-export default function Dashboard(props) {
+export default function editBlog(props) {
     const editorRef = useRef(null);
     const log = () => {
         if (editorRef.current) {
@@ -15,12 +15,21 @@ export default function Dashboard(props) {
         }
     };
 
+    const { blog } = usePage().props;
+
     const { data, setData, post, processing, errors, reset } = useForm({
-        title: '',
-        slug: '',
-        description: '',
+        title: blog.title,
+        slug: blog.slug,
+        description: blog.description,
+        metaTitle: blog.metaTitle,
+        metaDescription: blog.metaDescription,
+        metaData: blog.metaData,
+        created_at: blog.created_at,
     });
 
+    const editorChange = (event) => {
+        data.description = event
+    }
 
     const onHandleChange = (event) => {
         if (event.target.name == 'title') {
@@ -34,7 +43,7 @@ export default function Dashboard(props) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('blog.store'));
+        post(route('blog.update', blog.id));
     };
 
     return (
@@ -87,26 +96,83 @@ export default function Dashboard(props) {
                                         textareaName='description'
                                         value={data.description}
                                         onInit={(evt, editor) => editorRef.current = editor}
+                                        onEditorChange={editorChange}
                                         init={{
                                             height: 500,
                                             menubar: false,
                                             plugins: [
                                                 'advlist autolink lists link image charmap print preview anchor',
                                                 'searchreplace visualblocks code fullscreen',
-                                                'insertdatetime media table paste code help wordcount'
+                                                'insertdatetime media table paste code help wordcount stylebuttons'
                                             ],
                                             toolbar: 'undo redo | formatselect | ' +
                                                 'bold italic backcolor | alignleft aligncenter ' +
                                                 'alignright alignjustify | bullist numlist outdent indent | ' +
-                                                'removeformat | help',
+                                                'removeformat | help | | h1 h2 h3',
                                             content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
                                         }}
                                     />
 
                                     <InputError message={errors.description} className="mt-2" />
                                 </div>
+                                <div className="mt-4">
+                                    <InputLabel forInput="metaTitle" value="Meta Title" />
+
+                                    <TextInput
+                                        id="metaTitle"
+                                        type="text"
+                                        name="metaTitle"
+                                        value={data.metaTitle}
+                                        className="mt-1 block w-full"
+                                        handleChange={onHandleChange}
+                                    />
+
+                                    <InputError message={errors.metaTitle} className="mt-2" />
+                                </div>
+                                <div className="mt-4">
+                                    <InputLabel forInput="metaDescription" value="Meta Description" />
+
+                                    <TextInput
+                                        id="metaDescription"
+                                        type="text"
+                                        name="metaDescription"
+                                        value={data.metaDescription}
+                                        className="mt-1 block w-full"
+                                        handleChange={onHandleChange}
+                                    />
+
+                                    <InputError message={errors.metaDescription} className="mt-2" />
+                                </div>
+                                <div className="mt-4">
+                                    <InputLabel forInput="metaData" value="Meta Data" />
+
+                                    <TextInput
+                                        id="metaData"
+                                        type="text"
+                                        name="metaData"
+                                        value={data.metaData}
+                                        className="mt-1 block w-full"
+                                        handleChange={onHandleChange}
+                                    />
+
+                                    <InputError message={errors.metaData} className="mt-2" />
+                                </div>
+                                <div className="mt-4">
+                                    <InputLabel forInput="created_at" value="Blog Create Date" />
+
+                                    <TextInput
+                                        id="created_at"
+                                        type="date"
+                                        name="created_at"
+                                        value={data.created_at}
+                                        className="mt-1 block w-full"
+                                        handleChange={onHandleChange}
+                                    />
+
+                                    <InputError message={errors.created_at} className="mt-2" />
+                                </div>
                                 <PrimaryButton className='mt-4' processing={processing}>
-                                    Add Blog
+                                    Edit Blog
                                 </PrimaryButton>
                             </form>
                         </div>
