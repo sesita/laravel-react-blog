@@ -94,7 +94,7 @@ export default function editBlog(props) {
 
                                     <Editor apiKey='txt9y8vk9ycde0f2bdi79ijksbxiiwicw0wypxlpg2de2i7z'
                                         textareaName='description'
-                                        value={data.description}
+                                        initialValue={data.description}
                                         onInit={(evt, editor) => editorRef.current = editor}
                                         onEditorChange={editorChange}
                                         init={{

@@ -55,6 +55,10 @@ class BlogController extends Controller
             'title' => $request->title,
             'slug' => $request->slug,
             'description' => $request->description,
+            'metaTitle' => $request->metaTitle,
+            'metaDescription' => $request->metaDescription,
+            'metaData' => $request->metaData,
+            'created_at' => $request->created_at,
         ]);
 
         return Redirect::route('Dashboard');
